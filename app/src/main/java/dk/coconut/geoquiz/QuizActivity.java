@@ -1,5 +1,7 @@
 package dk.coconut.geoquiz;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,8 +14,11 @@ import android.widget.Toast;
 
 public class QuizActivity extends AppCompatActivity {
 
+
+
     private static final String TAG = "QuizActivity";
     private static final String KEY_INDEX = "index";
+
 
     private Button mTrueButton;
     private Button mFalseButton;
@@ -21,6 +26,7 @@ public class QuizActivity extends AppCompatActivity {
     private ImageButton mPreviousButton;
     private TextView mQuestionTextView;
     private TextView mAPIVersionView;
+    private Button mCheatButton;
 
     private Question[] mQuestionBank = new Question[] {
         new Question(R.string.question_oceans, true),
@@ -110,6 +116,16 @@ public class QuizActivity extends AppCompatActivity {
                 mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
 
                 updateQuestion();
+            }
+        });
+
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
+                Intent i = CheatActivity.newIntent(QuizActivity.this, answerIsTrue);
+                startActivity(i);
             }
         });
 
